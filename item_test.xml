@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item name="" identifier="scrapMed" category="Material" maxstacksize="8" Tags="smallitem" canbepicked="true" description="" cargocontaineridentifier="chemicalcrate" scale="0.5" impactsoundtag="impact_soft_light">
+        <!-- code omits-->
+    </Item>
+    <Item name="" identifier="scrapTox" category="Material" maxstacksize="1" Tags="smallitem" canbepicked="true" description="" cargocontaineridentifier="chemicalcrate" scale="0.5" impactsoundtag="impact_metal_light">
+        <!-- code omits-->
+    </Item>
+</Items>
