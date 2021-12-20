@@ -12,7 +12,4 @@ A small program used for split text from Item element
    运行`RUN_textsplit.bat`文件  
 ## Notice 注意事项  
 Currently this program can only process XML files that relate to `Item` element  
-Temporaily not catch the Exception so when you type an incorrect filename, the program will close  
-
 目前程序只能处理和`Item`有关的XML文件  
-暂时没有进行异常处理，所以当你输入了一个错误的文件名，程序会自动结束
