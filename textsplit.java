@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Calendar;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,9 +18,10 @@ import org.w3c.dom.NodeList;
 public class textsplit {
     static String welcome = "欢迎使用潜渊症文本分离器! Code by DKAMX\n可用指令: 读取XML文件[file] 结束程序[end]";
     static String askfile = "将文件和本程序放在同一层目录下，输入文件的名称(包括后缀名.xml)";
-    static String donefile = "在同目录下输出了一个名为output的XML文件";
+    static String donefile = "在同目录下输出了一个XML文件:";
 
     public static void main(String[] args) throws Exception { // throws as methods demand
+        textsplit tool = new textsplit(); // setup for helpful method
         String typing;
         BufferedReader echo = new BufferedReader(new InputStreamReader(System.in));
         do {
@@ -29,15 +31,15 @@ public class textsplit {
                 System.out.println(askfile);
                 String filepath = echo.readLine();
                 filepath = filepath.replaceAll("\\\\", "/");
-
                 try {
                     // setup a parser for XML
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
-                    Document doc = db.parse(new File(filepath));
+                    File file = new File(filepath);
+                    Document doc = db.parse(file);
 
-                    // setup for writing file
-                    File output = new File("output.xml");
+                    // setup for writing file with time and date
+                    File output = new File(tool.getDate() + "text_" + file.getName());
                     FileOutputStream fOut = new FileOutputStream(output);
                     OutputStreamWriter writer = new OutputStreamWriter(fOut, "UTF-8");
 
@@ -63,12 +65,21 @@ public class textsplit {
                     writer.append("</infotexts>");
                     writer.close();
                     fOut.close();
-                    System.out.println(donefile);
+                    System.out.println(donefile + output);
                 } catch (IOException except) { // handle for input wrong filename
                     System.out.println(except.getLocalizedMessage());
                     continue;
                 }
             }
         } while (!typing.equalsIgnoreCase("end"));
+    }
+
+    public String getDate() {
+        Calendar clock = Calendar.getInstance();
+        int year = clock.get(Calendar.YEAR);
+        int month = clock.get(Calendar.MONTH);
+        int day = clock.get(Calendar.DATE);
+        String date = String.valueOf(year) + String.valueOf(month) + String.valueOf(day);
+        return date;
     }
 }

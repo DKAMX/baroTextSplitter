@@ -4,7 +4,7 @@ A small program used for split text from Item element
 ## How to use 如何使用  
 1. Install JDK (version 11 or above, OpenJDK is also ok)  
    安装JDK（第11版本或者以上，OpenJDK也可以）  
-2. check that you have the `textsplit.java` file, this is the actual code that the program run  
+2. Check that you have the `textsplit.java` file, this is the actual code that the program run  
    Each time the program run, it will compile the source code again, to make sure it can run on this machine  
    同时检查同目录下有`textsplit.java`和文件，这是程序实际运行的代码  
    每次程序运行时，会重新编译一次源代码，确保程序能够在此电脑上正常运行  
