@@ -11,5 +11,5 @@ A small program used for split text from Item element
 3. Run the `RUN_textsplit.bat` file  
    运行`RUN_textsplit.bat`文件  
 ## Notice 注意事项  
-Currently this program can only process XML files that relate to `Item` element  
-目前程序只能处理和`Item`有关的XML文件  
+Currently this program can only process XML files that relate to `Affliction` or `Item` element  
+目前程序只能处理`Affliction`或`Item`有关的XML文件  
