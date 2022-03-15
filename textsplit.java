@@ -14,14 +14,14 @@ import org.w3c.dom.NodeList;
 
 /**
  * @author DKAMX
- * @version 0.1
+ * @version 0.2
  */
 public class textsplit {
     static String welcome = "欢迎使用潜渊症文本分离器! Code by DKAMX\n可用指令: 读取XML文件[file] 批量处理[batch] 结束程序[end]";
     static String askfile = "将文件和本程序放在同一层目录下, 输入文件的名称(包括后缀名.xml), 目前支持的XML元素: Affliction, Item";
     static String donefile = "在同目录下输出了一个XML文件: ";
     static String batchtask = "程序将自动读取当前目录下的所有.xml文件, 并尝试处理";
-    static String split = "--------------------------------";
+    static String split = "— — — — — — — — — — — — — — — —";
 
     public static void main(String[] args) throws Exception { // throws as methods demand
         String typing;
@@ -30,7 +30,6 @@ public class textsplit {
             System.out.println(welcome);
             typing = echo.readLine();
             if (typing.equalsIgnoreCase("file")) {
-                System.out.println(split);
                 System.out.println(askfile);
                 String filepath = echo.readLine();
                 filepath = filepath.replaceAll("\\\\", "/");
@@ -38,11 +37,11 @@ public class textsplit {
             } else if (typing.equalsIgnoreCase("batch")) {
                 System.out.println(batchtask);
                 File dir = new File("."); // current directory
-                System.out.println(dir.getName() + " isDirectory: " + dir.isDirectory());
+                // System.out.println(dir.getName() + " isDirectory: " + dir.isDirectory());
                 for (File currFile : dir.listFiles()) {
                     String filename = currFile.getName();
                     if (filename.endsWith(".xml")) {
-                        System.out.println("Filename: " + filename);
+                        System.out.println("Reading file: " + filename);
                         parseXML(filename);
                     }
                 }
@@ -94,9 +93,9 @@ public class textsplit {
                     if (description_node != null) {
                         description = description_node.getNodeValue();
                     }
-                    System.out.println(
-                            "name: " + name + ", identifier:" + identifier + ", description:"
-                                    + description);
+                    // System.out.println(
+                    // "name: " + name + ", identifier:" + identifier + ", description:"
+                    // + description);
                     if (items.item(i).getNodeName().equals("Item")) {
                         writer.append(
                                 "    <entityname." + identifier + ">" + name + "</entityname." + identifier
@@ -121,6 +120,7 @@ public class textsplit {
             writer.close();
             fOut.close();
             System.out.println(donefile + output);
+            System.out.println(split);
         } catch (Exception except) { // handle for input wrong filename
             System.out.println(except.getLocalizedMessage());
             return;
