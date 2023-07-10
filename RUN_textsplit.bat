@@ -1,2 +1,2 @@
-javac -encoding UTF-8 textsplit.java
-java textsplit
+javac -encoding UTF-8 GUI.java
+java GUI

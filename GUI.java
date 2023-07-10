@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -14,43 +15,64 @@ import javax.swing.UIManager;
  * @author Max
  */
 public class GUI {
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GUI().startup());
+  // main window
+  private JFrame window = new JFrame("Barotrauma Text Splitter");
+  // text area for display process output
+  private JTextArea textArea = new JTextArea();
+  private JScrollPane textpanel = new JScrollPane(textArea);
+  // panel for placing buttons
+  private JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
+  private JButton openB = new JButton("Open File");
+  private JButton exportB = new JButton("Export Text");
+  private JButton clearB = new JButton("Clear Output");
+
+  // corresponding parser
+  private XMLParser parser = new XMLParser(this);
+
+  public static void main(String[] args) {
+    // set visual style
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {
+      System.err.println(e);
     }
+    // start GUI
+    SwingUtilities.invokeLater(() -> new GUI().start());
+  }
 
-    public void startup() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  /**
+   * assemble panels and display
+   */
+  public void start() {
+    // set window
+    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    window.setLocationByPlatform(true);
+    window.setMinimumSize(new Dimension(640, 480));
+    // set text area
+    textArea.setEditable(false);
+    // bind button action
+    openB.addActionListener(e -> parser.parse());
+    exportB.addActionListener(e -> {
+    });
+    clearB.addActionListener(e -> textArea.setText(null));
+    // add button to panel
+    buttonPanel.add(openB);
+    buttonPanel.add(exportB);
+    buttonPanel.add(clearB);
 
-        // setup main window
-        JFrame window = new JFrame("baro Text Splitter");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLocationByPlatform(true);
-        window.setMinimumSize(new Dimension(480, 360));
+    window.add(buttonPanel, BorderLayout.NORTH);
+    window.add(textpanel, BorderLayout.CENTER);
+    window.setVisible(true);
+  }
 
-        // text area for display process output
-        JTextArea text = new JTextArea();
-        text.setEditable(false);
-        JScrollPane textpanel = new JScrollPane(text);
+  /**
+   * @param text text message to print
+   */
+  public void printText(String text) {
+    textArea.append(text + System.lineSeparator());
+  }
 
-        // setup button panel and buttons
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
-
-        JButton openB = new JButton("Open File");
-        JButton exportB = new JButton("Export Text");
-        JButton clearB = new JButton("Clear Output");
-        clearB.addActionListener(e -> text.setText(null));
-
-        buttonPanel.add(openB);
-        buttonPanel.add(exportB);
-        buttonPanel.add(clearB);
-
-        // assemble panels and display
-        window.add(buttonPanel, BorderLayout.NORTH);
-        window.add(textpanel, BorderLayout.CENTER);
-        window.setVisible(true);
-    }
+  public Component getParentWindow() {
+    return window;
+  }
 }
