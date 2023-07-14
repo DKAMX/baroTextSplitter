@@ -1,15 +1,10 @@
-# baroTextSplitter 潜渊症文本分离器
-A small program used for split text from Item element  
-用于分离Item元素中物品名称，描述等文本的小程序  
-## How to use 如何使用  
-1. Install JDK (version 11 or above, OpenJDK is also ok)  
-   安装JDK（第11版本或者以上，OpenJDK也可以）  
-2. Check that you have the `textsplit.java` file, this is the actual code that the program run  
-   Each time the program run, it will compile the source code again, to make sure it can run on this machine  
-   下载`textsplit.java`文件，这是程序实际运行的代码  
-   每次程序运行时，会重新编译一次源代码，确保程序能够在此电脑上正常运行  
-3. Run the `RUN_textsplit.bat` file in the same directory  
-   在同目录下运行`RUN_textsplit.bat`文件  
-## Notice 注意事项  
-Currently this program can only process XML files that relate to `Affliction` or `Item` element  
-目前程序只能处理`Affliction`或`Item`有关的XML文件  
+# Barotrauma Text Splitter
+A small program used for splitting attributes from XML elements. For example, the `name` and `description` of an item.  
+Currently, this program can only process XML files that relate to `Affliction` or `Item` element.  
+
+## How to use
+[**Download**](https://github.com/DKAMX/baroTextSplitter/releases/tag/v0.1.1) the zip file.  
+1. Install JDK (version 11 or above)  
+2. Check that you have the `textsplit.java` file, this is the actual code the program runs.  
+   Each time the program runs, it will recompile the source code to ensure it can run on this machine.  
+3. Run the `RUN_textsplit.bat` file in the same directory.  
