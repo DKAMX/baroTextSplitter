@@ -3,7 +3,7 @@ A small program used for splitting attributes from XML elements. For example, th
 Currently, this program can only process XML files that relate to `Affliction` or `Item` element.  
 
 ## How to use
-[**Download**](https://github.com/DKAMX/baroTextSplitter/releases/download/v0.2/baroTextSplitter_v0.2.zip) the zip file.  
+[**Download**](https://github.com/DKAMX/baroTextSplitter/archive/refs/tags/v0.2.zip) the zip file.  
 1. Install JDK (version 11 or above)  
 2. Check that you have the following file:  
    `GUI.java`  
