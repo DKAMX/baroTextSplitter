@@ -1,3 +1,4 @@
+[中文](README.zh-cn.md)
 # Barotrauma Text Splitter
 A small program used for splitting attributes from XML elements. For example, the `name` and `description` of an item.  
 Currently, this program can only process XML files that relate to `Affliction` or `Item` element.  
