@@ -57,9 +57,7 @@ public class GUI {
     textArea.setEditable(false);
     // bind button action
     openB.addActionListener(e -> parser.parse());
-    exportB.addActionListener(e -> {
-      parser.export();
-    });
+    exportB.addActionListener(e -> parser.export());
     clearB.addActionListener(e -> textArea.setText(null));
     // add button to panel
     buttonPanel.add(openB);
@@ -80,21 +78,45 @@ public class GUI {
     textArea.append(text + System.lineSeparator());
   }
 
+  /**
+   * Ask user to select among given options.
+   * 
+   * @param message message of the dialog
+   * @param title   title of the dialog
+   * @param options set of option to choose
+   * @return number indicate the choice, -1 if no options has been choosen
+   */
   public int showOptionDialog(Object message, String title, Object[] options) {
     return JOptionPane.showOptionDialog(window, message,
         title, JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
         null, options, null);
   }
 
+  /**
+   * Ask user for file to be opened.
+   * 
+   * @return file to be opened
+   */
   public File showOpenDialog() {
-    fileChooser.showOpenDialog(window);
+    int state = fileChooser.showOpenDialog(window);
     parser.updateTraversalPosition(fileChooser.getCurrentDirectory());
+    if (state == JFileChooser.CANCEL_OPTION) {
+      return null;
+    }
     return fileChooser.getSelectedFile();
   }
 
+  /**
+   * Ask user for file location to save.
+   * 
+   * @return location to save
+   */
   public File showSaveDialog() {
-    fileChooser.showOpenDialog(window);
+    int state = fileChooser.showOpenDialog(window);
     parser.updateTraversalPosition(fileChooser.getCurrentDirectory());
+    if (state == JFileChooser.CANCEL_OPTION) {
+      return null;
+    }
     return fileChooser.getSelectedFile();
   }
 }

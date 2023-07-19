@@ -59,6 +59,11 @@ public class XMLSplitter {
   private String elementType = "";
   private List<String[]> elements = new ArrayList<>();
 
+  /**
+   * Construct the splitter with a corresponding GUI.
+   * 
+   * @param window
+   */
   public XMLSplitter(GUI window) {
     this.window = window;
   }
@@ -66,6 +71,7 @@ public class XMLSplitter {
   public void parse() {
     // read filepath from file chooser
     File readpath = window.showOpenDialog();
+
     if (readpath != null) {
       window.printText(readpath.toString());
       parse(readpath);
@@ -73,27 +79,34 @@ public class XMLSplitter {
   }
 
   public void export() {
-    if (elements.isEmpty()) {
-      window.printText("File not opened");
+    if (elements == null || elements.isEmpty()) {
       return;
     }
+
     File savepath = window.showSaveDialog();
     if (savepath != null) {
       int confirm = 0; // 0(Yes)
+      // ask twice for overwrite existing file
       if (savepath.exists()) {
         String message = savepath.getName() + " already exists, want to replace it?";
         confirm = window.showOptionDialog(message, "Confirm", new String[] { "Yes", "No" });
+      } else {
+        // add extention name xml if not given in the chooser
+        if (!savepath.getName().endsWith(".xml") || !savepath.getName().endsWith(".XML")) {
+          savepath = new File(savepath.getAbsolutePath() + ".xml");
+        }
       }
+
       if (confirm == 0) {
+        // choose export target langauge
         String[] languageOptions = new String[] { "Simplified Chinese", "English" };
         int choice = window.showOptionDialog("Select export language", "Select", languageOptions);
+
         if (choice < 0) {
-          window.printText("Export file canceled");
           return;
         }
+
         export(savepath, languageOptions[choice]);
-      } else {
-        window.printText("Export file canceled");
       }
     }
   }
@@ -116,7 +129,9 @@ public class XMLSplitter {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
       DocumentBuilder db = dbf.newDocumentBuilder();
       Document doc = db.parse(filepath);
+      // check root element for the current file, such as Item/Affliction
       elementType = doc.getDocumentElement().getNodeName();
+      // parse all child nodes and save the result
       elements = parseNode(doc.getDocumentElement().getChildNodes());
     } catch (Exception e) {
       System.err.println(e);
@@ -124,16 +139,27 @@ public class XMLSplitter {
     }
   }
 
-  private List<String[]> parseNode(NodeList nodes) throws Exception {
+  /**
+   * parse given list of child nodes
+   * 
+   * @param nodes child nodes
+   * @return list of attributes of each node
+   */
+  private List<String[]> parseNode(NodeList nodes) {
     if (nodes.getLength() == 0) {
-      throw new IllegalArgumentException("empty nodes");
+      return null;
     }
+
     List<String[]> elements = new ArrayList<>();
     for (int i = 0; i < nodes.getLength(); i++) {
       Node currentNode = nodes.item(i);
+      // skip none element node, such as text node which is useless in attribute
+      // retrival
       if (currentNode.getNodeType() != Node.ELEMENT_NODE) {
         continue;
       }
+
+      // process each node, save results and skip empty node
       String[] result = splitInfo(currentNode);
       if (result == null) {
         continue;
@@ -147,15 +173,18 @@ public class XMLSplitter {
   /**
    * Split target parameters from given node.
    * 
-   * @param node
+   * @param node node to be read
    * @return the parameters stored as an array
    */
   private String[] splitInfo(Node node) {
+    // get identifier attribute
     NamedNodeMap attributes = node.getAttributes();
     Node identifierAttr = attributes.getNamedItem("identifier");
+    // identifier cannot be null as the game also use this to identify a game object
     if (identifierAttr == null) {
       return null;
     }
+    // get name and description attribute
     Node nameAttr = attributes.getNamedItem("name");
     Node descriptionAttr = attributes.getNamedItem("description");
     return new String[] {
@@ -165,19 +194,27 @@ public class XMLSplitter {
     };
   }
 
+  /**
+   * Write the parsed data to a file.
+   * 
+   * @param savepath saving location
+   * @param language target language, such as English or Simplified Chinese
+   */
   private void export(File savepath, String language) {
     try {
+      // write all data to child element
       Element root = createRootElement(language);
       appendChildElement(root, elements);
-
+      // use root element as the DOM source as root element contains all child element
+      // within it
       DOMSource ds = new DOMSource(root);
       TransformerFactory tf = TransformerFactory.newInstance();
-
+      // DOM to XML transformer's setting
       Transformer t = tf.newTransformer();
       t.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
       t.setOutputProperty(OutputKeys.INDENT, "yes");
       t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
+      // set the result to be saved to a file
       Result result = new StreamResult(savepath);
       t.transform(ds, result);
 
@@ -194,9 +231,11 @@ public class XMLSplitter {
    */
   private Element createRootElement(String language)
       throws ParserConfigurationException {
+    // instantiate Document object for create root element
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
     Document doc = db.newDocument();
+    // create root element with specified langauge attributes
     Element root = doc.createElement("infotexts");
     String[] setting = languageSetting.get(language);
     root.setAttribute("language", language);
@@ -214,8 +253,14 @@ public class XMLSplitter {
   private void appendChildElement(Element root, List<String[]> elements) {
     elements.forEach(e -> {
       Document doc = root.getOwnerDocument();
+      // Generate infotext element based on given root element's type, each attribute
+      // use an element in infotext, the information is retrived from a predefiend
+      // field. For example, an Item element has two attribute: Identifier and
+      // Description, so we only need to generate element for these two.
       elementMap.get(elementType).forEach(a -> {
         Element node = doc.createElement(a + "." + e[0]);
+        // leave a space inside each node, so it end up like: "<node> </node>", instead
+        // of: "<node/>"
         node.appendChild(doc.createTextNode(" "));
         root.appendChild(node);
       });
