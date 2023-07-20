@@ -21,7 +21,7 @@
 目前，这个程序只能处理和`Affliction`（减益）或`Item`（物品）相关的元素。  
 
 ## 如何使用
-[**下载**](https://github.com/DKAMX/baroTextSplitter/archive/refs/tags/v0.2.zip)压缩包。  
+[**下载**](https://github.com/DKAMX/baroTextSplitter/releases)压缩包。  
 1. 安装JDK（JDK11或更高版本）  
 2. 确认你有以下文件：  
    `GUI.java`  

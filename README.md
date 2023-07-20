@@ -21,7 +21,7 @@ Notice that the program copies the attribute and generates the language translat
 Currently, this program can only process XML files that relate to `Affliction` or `Item` element.  
 
 ## How to use
-[**Download**](https://github.com/DKAMX/baroTextSplitter/archive/refs/tags/v0.2.zip) the zip file.  
+[**Download**](https://github.com/DKAMX/baroTextSplitter/releases) the zip file.  
 1. Install JDK (version 11 or above)  
 2. Check that you have the following file:  
    `GUI.java`  
