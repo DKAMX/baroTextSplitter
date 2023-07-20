@@ -33,7 +33,7 @@ public class XMLSplitter {
 
   static {
     // initialize element constant
-    elementMap.put("Affliction",
+    elementMap.put("Afflictions",
         Set.of("afflictionname", "afflictiondescription",
             "afflictioncauseofdeath", "afflictioncauseofdeathself"));
     elementMap.put("Items",
@@ -43,9 +43,9 @@ public class XMLSplitter {
             "missionsuccess", "missionfailure",
             "missionmessage0", "missionmessage1"));
     // initialize language specific parameter
-    languageSetting.put("Simplified Chinese",
+    languageSetting.put(I18N.getString("simplifiedChinese"),
         new String[] { "true", "中文(简体)" });
-    languageSetting.put("English",
+    languageSetting.put(I18N.getString("english"),
         new String[] { "false", "English" });
   }
 
@@ -69,6 +69,8 @@ public class XMLSplitter {
   }
 
   public void parse() {
+    // clear previous regardless whether continue next parse or not
+    elements.clear();
     // read filepath from file chooser
     File readpath = window.showOpenDialog();
 
@@ -88,8 +90,9 @@ public class XMLSplitter {
       int confirm = 0; // 0(Yes)
       // ask twice for overwrite existing file
       if (savepath.exists()) {
-        String message = savepath.getName() + " already exists, want to replace it?";
-        confirm = window.showOptionDialog(message, "Confirm", new String[] { "Yes", "No" });
+        String message = savepath.getName() + I18N.getString("confirmReplaceFile");
+        confirm = window.showOptionDialog(message, I18N.getString("confirm"),
+            new String[] { I18N.getString("yes"), I18N.getString("no") });
       } else {
         // add extention name xml if not given in the chooser
         if (!savepath.getName().endsWith(".xml") || !savepath.getName().endsWith(".XML")) {
@@ -99,8 +102,9 @@ public class XMLSplitter {
 
       if (confirm == 0) {
         // choose export target langauge
-        String[] languageOptions = new String[] { "Simplified Chinese", "English" };
-        int choice = window.showOptionDialog("Select export language", "Select", languageOptions);
+        String[] languageOptions = languageSetting.keySet().toArray(new String[0]);
+        int choice = window.showOptionDialog(I18N.getString("selectMessage"), I18N.getString("select"),
+            languageOptions);
 
         if (choice < 0) {
           return;
@@ -135,7 +139,7 @@ public class XMLSplitter {
       elements = parseNode(doc.getDocumentElement().getChildNodes());
     } catch (Exception e) {
       System.err.println(e);
-      window.printText("Parse file failed");
+      window.printText(I18N.getString("parseFail"));
     }
   }
 
@@ -218,10 +222,10 @@ public class XMLSplitter {
       Result result = new StreamResult(savepath);
       t.transform(ds, result);
 
-      window.printText("Export file to " + savepath.getAbsolutePath());
+      window.printText(I18N.getString("exportTo") + savepath.getAbsolutePath());
     } catch (Exception e) {
       e.printStackTrace();
-      window.printText("Export file failed");
+      window.printText(I18N.getString("exportFail"));
     }
   }
 

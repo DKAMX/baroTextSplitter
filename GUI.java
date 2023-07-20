@@ -22,15 +22,15 @@ public class GUI {
   private XMLSplitter parser = new XMLSplitter(this);
 
   // main window
-  private JFrame window = new JFrame("Barotrauma Text Splitter");
+  private JFrame window = new JFrame(I18N.getString("title"));
   // text area for display process output
-  private JTextArea textArea = new JTextArea();
+  private JTextArea textArea = new JTextArea(I18N.getString("welcome"));
   private JScrollPane textpanel = new JScrollPane(textArea);
   // panel for placing buttons
   private JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
-  private JButton openB = new JButton("Open File");
-  private JButton exportB = new JButton("Export Text");
-  private JButton clearB = new JButton("Clear Output");
+  private JButton openB = new JButton(I18N.getString("openFile"));
+  private JButton exportB = new JButton(I18N.getString("exportFile"));
+  private JButton clearB = new JButton(I18N.getString("clearOutput"));
   // file chooser used by XMLParser
   private JFileChooser fileChooser = new JFileChooser(parser.lastPosition);
 
