@@ -1,3 +1,5 @@
+package com.dkamx.barotextsplitter;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
